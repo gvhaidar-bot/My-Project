@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Counter - With Rules</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        .done {
+            color: green;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // KOMPONEN TOMBOL
+        function Tombol({ teks, klik, warna, disabled }) {
+            return (
+                <button
+                    onClick={klik}
+                    disabled={disabled}
+                    style={{
+                        backgroundColor: warna,
+                        margin: '5px',
+                        padding: '10px',
+                        cursor: disabled ? 'not-allowed' : 'pointer'
+                    }}
+                >
+                    {teks}
+                </button>
+            );
+        }
+
+        function HomePage() {
+            const [Count, SetCount] = React.useState(10);
+
+            // Cek apakah sudah mencapai 10
+            const isDone = Count === 10;
+
+            function HandleAdd() {
+                // Cegah agar tidak lebih dari 10
+                if (Count < 10) {
+                    SetCount(Count + 1);
+                }
+            }
+
+            function HandleMinus() {
+                // Cegah agar tidak kurang dari 0
+                if (Count > 0) {
+                    SetCount(Count - 1);
+                }
+            }
+
+            function HandleReset() {
+                SetCount(0);
+            }
+
+            return (
+                <div style={{ textAlign: 'center', padding: '20px' }}>
+                    <h1>Nilai: {Count}</h1>
+
+                    {/* Tampilkan DONE! jika mencapai 10 */}
+                    {isDone && <p className="done">🎉 DONE! 🎉</p>}
+
+                    <div>
+                        <Tombol
+                            teks="+"
+                            klik={HandleAdd}
+                            warna="green"
+                            disabled={isDone}  // Disabled jika sudah 10
+                        />
+
+                        <Tombol
+                            teks="Reset"
+                            klik={HandleReset}
+                            warna="orange"
+                            disabled={!isDone}  // Reset hanya bisa diklik jika sudah 10
+                        />
+
+                        <Tombol
+                            teks="-"
+                            klik={HandleMinus}
+                            warna="red"
+                            disabled={Count === 0 || isDone}  // Disabled jika 0 atau sudah 10
+                        />
+                    </div>
+
+                    {/* Informasi tambahan */}
+                    <p style={{ marginTop: '20px' }}>
+                        {Count < 10 && `Butuh ${10 - Count} lagi untuk selesai`}
+                        {isDone && "Selamat! Kamu sudah mencapai target!"}
+                    </p>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<HomePage />);
+    </script>
+</body>
+
+</html>

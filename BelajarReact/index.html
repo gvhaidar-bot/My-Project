@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+
+    <script type="text/babel">
+        const container = document.getElementById("root");
+        const root = ReactDOM.createRoot(container);
+
+        // function Header() {
+        //     return (<h1>selamat belajar react 🤣</h1>); cara menulis react
+        // }
+        // function HomePage() {
+        //     return <div>
+        //         <Header />
+        //     </div > cara manggilnya 
+        // }
+
+        // ini cara nulis props 
+        // function Header(props) {
+        //     return (<h1> belajar react bersama {props.nama}</h1>);
+        // }
+
+        // function HomePage() {
+        //     return <div>
+        //         < Header nama="ali" />
+        //         < Header nama="dinda" />
+        //     </div>
+        // }
+
+
+        // ini props refactor 
+        // function Header({ author }) {
+        //     return (<h1> mari belajar bersama  {author ? author : "dilan"} </h1>);
+        // }
+
+        // function Homepage() {
+        //     return <div>
+        //         <Header />
+        //         <Header author="haidar" />
+        //     </div>
+        // }
+
+
+        function Homepage() {
+            const students = ["ali", "dilan", "mika"];
+            const [Likes, Setlikes] = React.useState(0);
+            const [Dislikes, SetDislikes] = React.useState(0);
+            function HandleClick() {
+                Setlikes(Likes + 1);
+
+            }
+
+            function HandleClickDislike() {
+                SetDislikes(Dislikes - 1);
+
+            }
+
+            return <div>
+                <ul>
+                    {students.map((student) => (
+                        <li key={student}>{student}</li> //key membantu React mengidentifikasi item mana yang berubah, ditambahkan, atau dihapus dalam sebuah daftar.
+                    ))}
+                </ul>
+                <button onClick={HandleClick}>like({Likes})</button>
+                <button onClick={HandleClickDislike}>Dislikes({Dislikes})</button>
+            </div>
+        }
+
+
+
+
+        root.render(<Homepage />);
+    </script>
+</body>
+
+</html>
