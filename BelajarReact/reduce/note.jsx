@@ -2,7 +2,6 @@ import { useState } from "react";
 
 export default function Note({ note, onChange, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);
-
   let component;
 
   function handleChangeText(e) {
@@ -10,36 +9,51 @@ export default function Note({ note, onChange, onDelete }) {
     onChange(newNote);
   }
 
+  function handleChangeDone(e) {
+    const newNote = { ...note, done: e.target.checked };
+    onChange(newNote);
+  }
+
   if (isEditing) {
     component = (
       <div>
-        <input value={note.text} onChange={handleChangeText} />
-        <button onClick={() => setIsEditing(false)}>save</button>
+        <input type="text" value={note.text} onChange={handleChangeText} />
+        <button
+          onClick={() => {
+            setIsEditing(false); // ✅ Sudah benar
+          }}
+        >
+          save
+        </button>
       </div>
     );
   } else {
     component = (
       <div>
         {note.text}
-        <button onClick={() => setIsEditing(true)}>Edit</button>
+        <button
+          onClick={() => {
+            // ✅ onChange → onClick
+            setIsEditing(true); // ✅ isEditing → setIsEditing
+          }}
+        >
+          edit
+        </button>
       </div>
     );
   }
 
-  function handleChangeDone(e) {
-    const newNote = { ...note, done: e.target.checked };
-    onChange(newNote);
-  }
-
   return (
     <label>
-      <input
-        type="checkbox"
-        checked={note.done}
-        onChange={handleChangeDone} // ✅ PERBAIKAN
-      />
+      <input type="checkbox" checked={note.done} onChange={handleChangeDone} />
       {component}
-      <button onClick={() => onDelete(note)}>delete</button>
+      <button
+        onClick={() => {
+          onDelete(note);
+        }}
+      >
+        delete
+      </button>
     </label>
   );
 }
